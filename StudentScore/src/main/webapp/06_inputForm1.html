@@ -1,0 +1,115 @@
+<!-- http-equiv="Content-Type": 이 속성은 서버가 전송한 문서의 헤더에 Content-Type 필드를 추가하여 웹 브라우저에게 문서의 유형을 알려줍니다.
+content="text/html; charset=utf-8": 이 속성은 문서의 유형이 "text/html"이고, 문자 인코딩이 UTF-8로 설정되어 있다는 것을 나타냅니다. -->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<html>
+
+<head>
+</head>
+
+<body>
+	<script>
+		function submit1() { // submit1 함수 정의
+			const form = document.getElementById('form1'); // HTML 문서에서 id 속성이 "form1"인 요소를 찾아와 해당 요소를 변수 form에 할당
+			const name = form.elements.name.value; // 이름 필드 값 가져오기
+			const kor = form.elements.korean.value; // 국어 점수 필드 값 가져오기
+			const eng = form.elements.english.value; // 영어 점수 필드 값 가져오기
+			const mat = form.elements.math.value; // 수학점수 필드 값 가져오기
+			// const pattern1 = /^([a-zA-Z]|[가-힣])+$/; // 한글 또는 영어만 입력 가능한 패턴1
+			const pattern1 = /^([a-zA-Z가-힣]+|[a-zA-Z0-9가-힣]+)$/; // 한글 또는 영어만 입력 가능한 패턴1, 한글, 영어, 숫자 조합도 입력 가능
+			const pattern2 = /^(?:100|[1-9]?[0-9])$/; // 0부터 100 사이의 정수만 입력 가능한 패턴2
+
+			if (name.trim() === '' || kor.trim() === '' || eng.trim() === ''
+					|| mat.trim() === '') { // 입력 창이 비어있으면
+				alert("데이터를 모두 입력해주세요."); // 해당 메세지 출력
+				return; // 함수 실행 종료
+			}
+
+			if (!pattern1.test(name)) { // 이름에 유효한 한글 또는 영어가 입력되지 않으면
+				alert("이름은 정확한 한글 또는 영어만 입력 가능합니다."); // 해당 메세지 출력
+				return; // 함수 실행 종료
+			}
+
+			if (!pattern2.test(kor) || !pattern2.test(eng)
+					|| !pattern2.test(mat)) { // 점수가 0부터 100사이의 값이 아니면
+				alert("국어, 영어, 수학 점수는 0부터 100 사이의 정수만 입력 가능합니다."); // 해당 메세지 출력
+				return; // 함수 실행 종료
+			}
+
+			if (name.length > 20) { // 이름이 20자 이상이면
+				alert("이름은 20자 이하만 입력 가능합니다."); // 해당 메세지 출력
+				return; // 함수 실행 종료
+			}
+
+			form.action = "07_insertDB.jsp"; // 07_insertDB.jsp로 제출할 위치 지정
+			form.submit(); // 제출
+
+		}
+	</script>
+	<h1>성적입력추가</h1>
+	<form method='get' id="form1"> <!--아래 폼을 다 채우고 실행은 insertDB.jsp로 보낸다(post)-->
+		<table cellspacing=1 width=400 border=0> <!-- table 열고 셀크기, 넓이, 테두리 스타일 지정 -->
+			<tr>
+			<!-- 테이블 셀 내에 너비가 100인 버튼을 생성하고, 버튼의 크기와 텍스트를 지정하며, 클릭 이벤트가 발생하면 submit1() 함수가 호출되도록 설정 -->
+				<td width=100><input type="button"
+					style="width: 100px; height: 50px; font-size: 16px;" value="추가"
+					onclick="submit1()"></td>
+			</tr>
+		</table>
+		
+		<br>
+		
+		<table cellspacing=5 width=500 height=250 border=1> <!-- table 열고 셀크기, 넓이, 테두리 스타일 지정 -->
+			<tr>
+				<td width=200>
+					<p align=center>이름</p> <!-- 이름 -->
+				</td>
+				<td width=300>
+					<p align=center>
+						<input type='text' name='name' value=''> <!-- 'name'아리는 이름에 입력 할 수 있도록 공백 저장 -->
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td width=200>
+					<p align=center>학번</p> <!-- 학번 -->
+				</td>
+				<td width=300>
+					<p align=center>자동부여</p> <!--학번은 자동으로 맨 뒷번호 등으로 부여-->
+				</td>
+			</tr>
+			<tr>
+				<td width=200>
+					<p align=center>국어</p> <!-- 국어 -->
+				</td>
+				<td width=300> 
+					<p align=center>
+						<input type='text' name='korean' value=''> <!-- 'korean'아리는 이름에 입력 할 수 있도록 공백 저장 -->
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td width=200> 
+					<p align=center>영어</p> <!-- 영어 -->
+				</td>
+				<td width=300> 
+					<p align=center>
+						<input type='text' name='english' value=''>  <!-- 'english'아리는 이름에 입력 할 수 있도록 공백 저장 -->
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td width=200> 
+					<p align=center>수학</p> <!-- 수학 -->
+				</td>
+				<td width=300> 
+					<p align=center>
+						<input type='text' name='math' value=''> <!-- ''math''아리는 이름에 입력 입력 할 수 있도록 공백 저장 -->
+					</p>
+				</td>
+			</tr>
+		</table>
+	</form>
+</body>
+
+</html>
